@@ -9,33 +9,29 @@ class EncryptionComponent extends Component
     public $input;
     public $mode;
     public $key;
-    public $output;
+    public $output = '';
 
     public function index()
     {
         return view('encryption');
     }
 
-    public function submit()
+    public function submit(Request $request)
     {
         return view('encryption', ['output' => $this->encrypt($this->input, $this->mode, $this->key)]);
     }
 
-    public function encrypt(Request $request)
+    public function encrypt()
     {
-        $input = $request->input('input');
-        $mode = $request->input('mode');
-        $key = $request->input('key');
-
+        $input = $this->input;
+        $mode = $this->mode;
+        $key = $this->key;
         switch ($mode) {
-            case 'cesar':
-                $output = $this->cesarEncrypt($input, $key);
-                break;
             case 'vigenere':
                 $output = $this->vigenereEncrypt($input, $key);
                 break;
             default:
-                $output = '';
+                $output = $this->cesarEncrypt($input, $key);
                 break;
         }
       $this->output = $output;
